@@ -3,9 +3,10 @@ APPINSPECT_IMAGE=outcoldsolutions/splunk-appinspect:1.6.0
 
 SPLUNK_PASSWORD=splunkdev
 
+OLD_APP=jay_ta
 APP=jay_ta
 
-.PHONY: splunk-up splunk-down splunk-logs-follow splunk-bash splunk-web splunk-refresh app-clean app-pack app-inspect
+.PHONY: up down logs bash web refresh app-clean app-pack app-inspect install refresh
 
 up:
 	docker run \
@@ -60,3 +61,12 @@ app-inspect:
 
 install:
 	pip install --target=./${APP}/lib -r ./${APP}/requirements.txt
+
+rename:
+	mv -v ${OLD_APP} ${APP} 
+	sed -i "s/${OLD_APP}/${APP}/" \
+	Makefile \
+	.gitignore \
+	${APP}/default/app.conf \
+	hack/splunk/etc/users/admin/user-prefs/local/user-prefs.conf \
+	${APP}/bin/*.py

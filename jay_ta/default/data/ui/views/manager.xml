@@ -1,0 +1,29 @@
+<form theme="dark">
+  <label>Manager Application</label>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="text" token="customer.name">
+      <label>Customer Name</label>
+    </input>
+    <input type="dropdown" token="action">
+      <label>Action</label>
+      <choice value="add">Add</choice>
+      <choice value="remove">Remove</choice>
+    </input>
+  </fieldset>
+  <row>
+    <panel depends="$action$,$customer.name$">
+      <title>Vals: $customer.name$ and $action$</title>
+      <table>
+        <search>
+          <query>| makeresults 
+| eval customer="$customer.name$" 
+| eval action="$action$"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="list.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>
